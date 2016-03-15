@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="tiles.definition" template="/WEB-INF/views/tiles/default_template.jsp">
+      <put-attribute name="title" value="" />
+      <put-attribute name="head" value="/WEB-INF/views/tiles/head.jsp" />
+      <put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp" />
+      <put-attribute name="body" value="" />
+      <!-- <put-attribute name="sideFooter" value="/WEB-INF/views/tiles/sideFooter.jsp" /> -->
+      <put-attribute name="modal" value="/WEB-INF/views/tiles/modal.jsp" />
+      <put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp" />
+   </definition>
+	
+	<!-- main -->
+	<definition name="index" extends="tiles.definition">
+	    <put-attribute name="title" value="s_Board" />
+	    <put-attribute name="body" value="/WEB-INF/main.jsp" />
+	</definition>
+	
+	<!-- login -->
+	<definition name="login" extends="tiles.definition">
+	    <put-attribute name="title" value=" Login " />
+	    <put-attribute name="body" value="/WEB-INF/views/tiles/login.jsp" />
+	</definition>
+	
+	<!-- join -->
+	<definition name="join" extends="tiles.definition">
+	    <put-attribute name="title" value=" join " />
+	    <put-attribute name="body" value="/WEB-INF/views/tiles/join.jsp" />
+	</definition>
+	
+</tiles-definitions>

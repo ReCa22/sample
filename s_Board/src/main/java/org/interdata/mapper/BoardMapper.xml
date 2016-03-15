@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.interdata.board.BoardDAO"> <!--이 sql 문장과 매핑될 인터페이스의 완전한 경로 -->
+	<insert id="boardInsert" parameterType="org.interdata.board.BoardVO">
+		INSERT INTO NOTICE 
+		(NUM, ID, CONTENTS, DAY, TITLE, HIT, PARENT, INDENT) 
+		VALUES(NOTICE_SEQ.NEXTVAL, #{id}, #{contents}, SYSDATE, #{title}, 0, 0, 0)
+	</insert>
+
+	<insert id="boardInsertFile" parameterType="org.interdata.board.BoardVO" statementType="CALLABLE">
+		{CALL FILE_UPLOAD_PRO(#{id, mode=IN}, #{contents, mode=IN},
+		#{title, mode=IN},#{originname, mode=IN},
+		#{changename, mode=IN}, #{file_size, mode=IN})}
+	</insert>
+	
+	<select id="getNoticeList" resultType="org.interdata.board.BoardVO">
+	SELECT * FROM (
+		  SELECT t1.*,
+		  TRUNC((ROWNUM-1)/5)+1 page FROM
+			(
+				SELECT ROWNUM RNUM, LPAD ('　', (LEVEL-1)*4,'　') || DECODE(LEVEL,1,'','┕ ')||TITLE as TITLE, HIT, DAY, NUM, PARENT, ID
+				FROM NOTICE
+				WHERE 1=1
+				START WITH PARENT=0
+				CONNECT BY PRIOR NUM = PARENT
+				ORDER SIBLINGS BY NUM DESC
+			) t1 )
+		where page=#{page}
+	</select>
+	
+	<select id="getSearchPagenum" resultType="int">
+    	SELECT COUNT(*) 
+    	FROM NOTICE
+    	WHERE 1=1
+    	<if test="searchTitle != null">
+			<choose>
+				<when test="searchTitle==1">
+					AND TITLE LIKE '%'||#{searchBar} ||'%'
+				</when>
+				<otherwise>
+					AND ID LIKE '%'||#{searchBar} ||'%'
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="getSearchList" resultType="org.interdata.board.BoardVO">
+	SELECT * FROM (
+		  SELECT t1.*,
+		  TRUNC((ROWNUM-1)/5)+1 page FROM
+			(
+			SELECT ROWNUM RNUM, LPAD ('　', (LEVEL-1)*4,'　') || DECODE(LEVEL,1,'','┕ ')||TITLE as TITLE, HIT, DAY, NUM, PARENT, ID
+			FROM NOTICE
+			WHERE 1=1
+			<if test="searchTitle != null">
+				<choose>
+					<when test="searchTitle==1">
+						AND TITLE LIKE '%'||#{searchBar} ||'%'
+					</when>
+					<otherwise>
+						AND ID LIKE '%'||#{searchBar} ||'%'
+					</otherwise>
+				</choose>
+			</if>
+			START WITH PARENT=0
+			CONNECT BY PRIOR NUM = PARENT
+			ORDER SIBLINGS BY NUM DESC
+			) t1 )
+		where page=#{page}
+	</select>
+	
+	<select id="getPagenum" resultType="int">
+    	SELECT COUNT(*) 
+    	FROM NOTICE
+	</select>
+	
+	<select id="getInfo" resultType="org.interdata.board.BoardVO">
+		SELECT n.NUM, n.ID, n.CONTENTS, n.DAY, n.TITLE, n.HIT, n.PARENT, n.INDENT, a.ORIGIN AS ORIGINNAME, a.SAVE AS CHANGENAME, a.FILE_SIZE
+		FROM NOTICE n LEFT JOIN ATTACHED_FILE a
+    	ON n.NUM = a.BOARD_NUM
+		WHERE n.NUM = #{num}
+	</select>
+	
+	<delete id="dellFile">
+		DELETE FROM ATTACHED_FILE 
+		WHERE BOARD_NUM = #{num}
+	</delete>
+	
+	<update id="boardUpdate" parameterType="org.interdata.board.BoardVO">
+		UPDATE NOTICE 
+		SET TITLE = #{title}, 
+			CONTENTS = #{contents} 
+		WHERE NUM = #{num}
+	</update>
+	
+	<update id="boardUpdateFile" parameterType="org.interdata.board.BoardVO" statementType="CALLABLE">
+		{CALL FILE_UPLOAD_UPDATE_PRO(#{num, mode=IN}, #{contents, mode=IN},
+		#{title, mode=IN},#{originname, mode=IN},
+		#{changename, mode=IN}, #{file_size, mode=IN})}
+	</update>
+	
+	<delete id="delBoard">
+		DELETE FROM NOTICE
+		WHERE NUM = #{num}
+	</delete>
+	
+	<update id="updateHit">
+		UPDATE NOTICE
+		SET HIT = HIT+1
+		WHERE NUM = #{num}
+	</update>
+	
+	<insert id="insertReply" parameterType="org.interdata.member.MemberVO">
+		INSERT INTO NOTICE 
+		(NUM, ID, CONTENTS, DAY, TITLE, HIT, PARENT, INDENT) 
+		VALUES(NOTICE_SEQ.NEXTVAL, #{id}, #{contents}, SYSDATE, #{title}, 0, #{num}, #{indent}+1)
+	</insert>
+	
+	<select id="getReplyList" resultType="org.interdata.board.BoardVO">
+		SELECT*
+		FROM NOTICE
+		WHERE PARENT = #{num}
+	</select>
+</mapper>

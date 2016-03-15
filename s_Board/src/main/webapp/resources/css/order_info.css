@@ -1,0 +1,96 @@
+* 
+{
+	font-family: 'Nanum Gothic Bold';
+}
+#teachImg {
+	float: left;
+	height: 240px;
+}
+
+th {
+	height: 39px;
+	padding: 0 0 0 12px;
+	background: #e0dfdf;
+	font-family: 'Nanum Gothic Bold';
+	border-bottom: 1px solid #b6b5b5;
+	text-align: left;
+}
+
+.order_info {
+	display: inline-block;
+	width: inherit;
+}
+
+.view_tableNew {
+	text-align: left;
+	border-left: 1px solid #b6b5b5;
+	border-top: 1px solid #b6b5b5;
+	float: right;
+}
+
+td.header {
+	font-family: 'Nanum Gothic Bold';
+	padding: 0 0 0 12px;
+}
+
+table.view_tableNew.well.active {
+	font-size: 16px;
+}
+
+.topDiv {
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	display: inline-block;
+}
+
+th.btn-primary.active, th.btn-primary.focus, th.btn-primary:active, th.btn-primary:focus,
+	th.btn-primary:hover, .open>.dropdown-toggle.btn-primary {
+	background-color: #55a79a;
+	border-color: #4c968a;
+}
+.btn-warning.active, .btn-warning.focus, .btn-warning:active, .btn-warning:focus, .btn-warning:hover, .open > .dropdown-toggle.btn-warning {
+	background-color: #f0ad4e;
+    border-color: #eea236;
+    }
+
+/* #course {
+	text-align: center;
+	width: 300px;
+	display: inline-block;
+	overflow: hidden;
+	text-align: left;
+} */
+#cashBtn {
+	width: 100%;
+}
+#courseBtn {
+	/* padding: 15px 75px; */
+	font-family: 'Nanum Gothic Bold';
+	font-size: 18px;
+}
+li {
+    list-style: none;
+}
+ul {
+    -webkit-padding-start: initial;
+}
+#basketBtn 
+{
+    font-family: 'Nanum Gothic Bold';
+    float: right;
+}
+td {
+	background-color: white;
+}
+.btn span {
+    display: block;
+    font-size: 25px;
+    font-family: 'Nanum Gothic Bold';
+    display: inline-block;
+}
+#userId {
+	float: right;
+	margin-right: 3%;
+}

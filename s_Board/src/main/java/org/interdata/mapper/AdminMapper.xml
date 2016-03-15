@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.interdata.admin.AdminDAO"> <!--이 sql 문장과 매핑될 인터페이스의 완전한 경로 -->
+	<select id="getSearchPagenum" resultType="int">
+    	SELECT COUNT(*) 
+    	FROM MEMBER
+    	WHERE 1=1
+    	<if test="searchTitle != null">
+    		<choose>
+				<when test="searchTitle==1">
+					AND NAME LIKE '%'||#{searchBar} ||'%'
+				</when>
+				<otherwise>
+					AND ID LIKE '%'||#{searchBar} ||'%'
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="getSearchList" resultType="org.interdata.member.MemberVO">
+	SELECT * FROM (
+		  SELECT t1.*,
+		  TRUNC((ROWNUM-1)/5)+1 page FROM
+			(
+			SELECT ROWNUM RNUM, ID, EMAIL, UPPERLOC ADDRESS, LOWERLOC ADDRESS_ETC, QUESTION, ANSWER, GENDER, NAME
+			FROM(
+				SELECT *
+				FROM MEMBER
+				WHERE 1=1
+				<if test="searchTitle != null">
+					<choose>
+						<when test="searchTitle==1">
+							AND NAME LIKE '%'||#{searchBar} ||'%'
+						</when>
+						<otherwise>
+							AND ID LIKE '%'||#{searchBar} ||'%'
+						</otherwise>
+					</choose>
+				</if>
+				ORDER BY NAME
+				)	) t1 )
+		where page=#{page}
+	</select>
+	
+	<select id="getPagenum" resultType="int">
+    	SELECT COUNT(*) 
+    	FROM MEMBER
+	</select>
+	
+	<select id="getMemberList" resultType="org.interdata.member.MemberVO">
+	SELECT * FROM (
+		  SELECT t1.*,
+		  TRUNC((ROWNUM-1)/5)+1 page FROM
+			(
+	        SELECT ROWNUM RNUM, ID, EMAIL, UPPERLOC ADDRESS, LOWERLOC ADDRESS_ETC, QUESTION, ANSWER, GENDER, NAME 
+	        FROM(
+	        	SELECT *
+				FROM MEMBER
+				WHERE 1=1
+				ORDER BY NAME
+	        ) ) t1 )
+	where page=#{page}
+	</select>
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.interdata.member.MemberDAO"> <!--이 sql 문장과 매핑될 인터페이스의 완전한 경로 -->
+	<insert id="insertMember" parameterType="org.interdata.member.MemberVO">
+		<!-- INSERT INTO MEMBER(
+			
+		) -->
+		INSERT INTO MEMBER 
+			(ID, PW, NAME, UPPERLOC, LOWERLOC, EMAIL, GENDER, QUESTION, ANSWER) 
+		VALUES(
+			#{id}, #{pw}, #{name}, #{address}, #{address_etc}, #{email}, #{gender}, #{question}, #{answer}
+		)
+	</insert>
+	
+	<insert id="insertZipCode" parameterType="org.interdata.member.MemberVO">
+		INSERT INTO 
+		ZIP_CODE(ID, ADDRESS, ADDRESS_ETC, POSTCODE1, POSTCODE2) 
+		VALUES(#{id}, #{address}, #{address_etc}, #{postcode1}, #{postcode2})
+	</insert>
+	
+	<select id="idCheck" resultType="org.interdata.member.MemberVO">
+		SELECT * 
+		FROM MEMBER 
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="loginCheck" resultType="org.interdata.member.MemberVO">
+		SELECT * 
+		FROM MEMBER 
+		WHERE ID=#{id} 
+		AND PW=#{pw}
+	</select>
+	
+	<select id="getUserInfo" resultType="org.interdata.member.MemberVO">
+		SELECT M.ID, M.PW, M.NAME, M.EMAIL, M.UPPERLOC AS ADDRESS, M.LOWERLOC AS ADDRESS_ETC, Z.POSTCODE1, Z.POSTCODE2
+		FROM MEMBER M INNER JOIN ZIP_CODE Z
+		ON M.ID = Z.ID 
+		WHERE M.ID = #{id}
+	</select>
+	
+	<update id="updateMember" parameterType="org.interdata.member.MemberVO">
+		UPDATE MEMBER 
+		SET PW = #{pw}, 
+			LOWERLOC = #{address_etc}, 
+			UPPERLOC = #{address}
+		WHERE ID = #{id}
+	</update>
+	
+	<update id="updateZipCode" parameterType="org.interdata.member.MemberVO">
+		UPDATE ZIP_CODE
+		SET ADDRESS = #{address},
+			ADDRESS_ETC = #{address_etc},
+			POSTCODE1 = #{postcode1},
+			POSTCODE2 = #{postcode2}
+		WHERE ID = #{id}
+	</update>
+	
+	<select id="getPw" resultType="org.interdata.member.MemberVO">
+		SELECT * 
+		FROM MEMBER
+		WHERE ID=#{id}
+		AND EMAIL = #{address}||'@'||#{address_etc}
+	</select>
+</mapper>

@@ -1,0 +1,67 @@
+* 
+{
+	font-family: 'Nanum Gothic Bold';
+}
+#cashBtn 
+{
+    width: 100%;
+}
+.btn .sp 
+{
+    font-size: 25px;
+    font-family: 'Nanum Gothic Bold';
+    display: inline-block;
+}
+.order_content 
+{
+	border : 1px solid #bbbbbb;
+	padding : 0 20px;
+	font-family: "Nanum Gothic", "Dotum", "AppleGothic", sans-serif;
+	
+}
+
+.order_content table
+{
+	line-height: 20px;
+}
+
+.order_tdtxt 
+{
+	background: url("/WebPro/resources/img/order/order_line.png" ) repeat-x left top; 
+    padding-left: 20px;
+}
+
+.order_table tr:first-child td {
+    background: none;
+}
+
+.fl_left
+{
+	float: left;
+}
+
+.fl_middle
+{
+	min-width: 150px;
+}
+
+li
+{
+	list-style:none;
+}
+
+ol, ul
+{
+	margin-left: -40px;
+}
+
+img 
+{
+    width: 128px;
+    height: 165px;
+}
+
+a.btn.btn-primary 
+{
+   	padding: 6px 46px;
+}
